@@ -15,7 +15,7 @@ def main():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('queue', help="SQS queue to poll")
-    parser.add_argument('--messages', type=int, help="Number of messages per attempt", default=10)
+    parser.add_argument('--messages', type=int, choices=xrange(1, 10), help="Messages per attempt", default=10)
     parser.add_argument('--directory', help="Base directory for downloaded files", default=os.getcwd())
     parser.add_argument('--sleep', type=int, help="Time to sleep in seconds between attempts", default=5)
     args = parser.parse_args()
@@ -26,10 +26,11 @@ def main():
     # connect to S3
     s3 = boto3.resource('s3')
 
+
     print("Downloading to {0}".format(args.directory))
 
     while True:
-        for message in queue.receive_messages(MaxNumberOfMessages=10):
+        for message in queue.receive_messages(MaxNumberOfMessages=args.messages):
             key = None
             bucket = None
             event = None
