@@ -26,7 +26,6 @@ def main():
     # connect to S3
     s3 = boto3.resource('s3')
 
-
     print("Downloading to {0}".format(args.directory))
 
     while True:
