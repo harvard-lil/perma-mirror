@@ -51,6 +51,7 @@ def main():
                 fullpath = os.path.join(args.directory, key)
                 if os.path.exists(fullpath):
                     print("{0} already exists".format(key))
+                    message.delete()
                 else:
                     try:
                         s3.Bucket(bucket).download_file(key, fullpath)
