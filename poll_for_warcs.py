@@ -60,6 +60,8 @@ def main():
                     except botocore.exceptions.ClientError as e:
                         if e.response['Error']['Code'] == "404":
                             print("WARNING: {0} does not exist in the {1} bucket".format(key, bucket))
+                        elif e.response['Error']['Code'] == "NoSuchKey":
+                            print("WARNING: NoSuchKey: {0}".format(key))
                         else:
                             raise
             else:
