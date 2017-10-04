@@ -42,7 +42,7 @@ def main():
             except KeyError:
                 pass
 
-            if key and bucket and event.startswith("ObjectCreated"):
+            if key and bucket and event.startswith("ObjectCreated") and not key.startswith("generated/cache/"):
                 try:
                     path, filename = os.path.split(key)
                     os.makedirs(os.path.join(args.directory, path))
