@@ -49,21 +49,17 @@ def main():
                 except OSError:
                     pass
                 fullpath = os.path.join(args.directory, key)
-                if os.path.exists(fullpath):
-                    print("{0} already exists".format(key))
+                try:
+                    s3.Bucket(bucket).download_file(key, fullpath)
                     message.delete()
-                else:
-                    try:
-                        s3.Bucket(bucket).download_file(key, fullpath)
-                        message.delete()
-                        print("Got {0} from {1}".format(key, bucket))
-                    except botocore.exceptions.ClientError as e:
-                        if e.response['Error']['Code'] == "404":
-                            print("WARNING: {0} does not exist in the {1} bucket".format(key, bucket))
-                        elif e.response['Error']['Code'] == "NoSuchKey":
-                            print("WARNING: NoSuchKey: {0}".format(key))
-                        else:
-                            raise
+                    print("Got {0} from {1}".format(key, bucket))
+                except botocore.exceptions.ClientError as e:
+                    if e.response['Error']['Code'] == "404":
+                        print("WARNING: {0} does not exist in the {1} bucket".format(key, bucket))
+                    elif e.response['Error']['Code'] == "NoSuchKey":
+                        print("WARNING: NoSuchKey: {0}".format(key))
+                    else:
+                        raise
             else:
                 print("Deleting message {0}".format(message.body))
                 message.delete()
