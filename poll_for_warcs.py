@@ -26,7 +26,9 @@ def main():
     # connect to S3
     s3 = boto3.resource('s3')
 
-    assert os.path.isdir("{0}/generated/warcs".format(args.directory))
+    # does it look like the storage is mounted? check on every download, too.
+    generated_warcs = "{0}/generated/warcs".format(args.directory)
+    assert os.path.isdir(generated_warcs)
     print("Downloading to {0}".format(args.directory))
 
     while True:
@@ -51,6 +53,7 @@ def main():
                     pass
                 fullpath = os.path.join(args.directory, key)
                 try:
+                    assert os.path.isdir(generated_warcs)
                     s3.Bucket(bucket).download_file(key, fullpath)
                     message.delete()
                     print("Got {0} from {1}".format(key, bucket))
