@@ -50,8 +50,8 @@ def main(queue, messages, directory, sleep):
             if (
                     key
                     and bucket
-                    and event.startswith("ObjectCreated")
-                    and not key.startswith("generated/cache/")
+                    and event.startswith('ObjectCreated')
+                    and not key.startswith('generated/cache/')
             ):
                 try:
                     path, filename = os.path.split(key)
@@ -65,9 +65,9 @@ def main(queue, messages, directory, sleep):
                     message.delete()
                     click.echo(f'Got {key} from {bucket}')
                 except botocore.exceptions.ClientError as e:
-                    if e.response['Error']['Code'] == "404":
+                    if e.response['Error']['Code'] == '404':
                         click.echo(f'WARNING: {key} is not in {bucket}')
-                    elif e.response['Error']['Code'] == "NoSuchKey":
+                    elif e.response['Error']['Code'] == 'NoSuchKey':
                         click.echo(f'WARNING: NoSuchKey: {key}')
                     else:
                         raise
@@ -78,5 +78,5 @@ def main(queue, messages, directory, sleep):
         time.sleep(sleep)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
