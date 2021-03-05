@@ -8,7 +8,7 @@ objects. It is intended to mirror WARCs created by
 Usage
 -----
 
-At the moment, start a virtual environment and install the
+For regular use, start a virtual environment and install the
 requirements, something like this:
 
     python3 -m venv env
@@ -19,7 +19,7 @@ Now you can run
 
     python poll_for_warcs.py --help
 
-Alternatively, [install
+For development, [install
 Poetry](https://python-poetry.org/docs/#installation), run `source
 $HOME/.poetry/env` and install requirements like this:
 
@@ -29,7 +29,9 @@ Now you can run
 
     poetry run python poll_for_warcs.py --help
 
-(The `poetry` mechanism is preferable, but the traditional
-`requirements.txt` will remain here until deployment using `poetry` is
-set up. This probably means publishing a package, rather than running
-`poetry` in production.)
+If you update any packages, run `poetry export > requirements.txt` to
+keep it in sync with `poetry.lock`.
+
+(A stretch goal will be to use `poetry` to publish a package to PyPI,
+so that we don't have to install requirements "by hand" in
+production.)
