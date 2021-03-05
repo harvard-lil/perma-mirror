@@ -9,11 +9,11 @@ import click
 
 @click.command()
 @click.argument('queue')
-@click.option('--messages', click.IntRange(1, 10), default=10,
+@click.option('--messages', type=click.IntRange(1, 10), default=10,
               help='Messages per attempt')
 @click.option('--directory', default=os.getcwd(),
               help='Base directory for downloaded files')
-@click.option('--sleep', type=int, default=5,
+@click.option('--sleep', default=5,
               help='Time to sleep in seconds between attempts')
 def main(queue, messages, directory, sleep):
     """
