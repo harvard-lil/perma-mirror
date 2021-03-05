@@ -31,4 +31,5 @@ Now you can run
 
 (The `poetry` mechanism is preferable, but the traditional
 `requirements.txt` will remain here until deployment using `poetry` is
-set up.)
+set up. This probably means publishing a package, rather than running
+`poetry` in production.)
