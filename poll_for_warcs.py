@@ -66,7 +66,7 @@ def main(queue, messages, directory, sleep):
                     print(f'Got {key} from {bucket}')
                 except botocore.exceptions.ClientError as e:
                     if e.response['Error']['Code'] == "404":
-                        print(f'WARNING: {key} does not exist in the {bucket} bucket')
+                        print(f'WARNING: {key} does not exist in {bucket}')
                     elif e.response['Error']['Code'] == "NoSuchKey":
                         print(f'WARNING: NoSuchKey: {key}')
                     else:
