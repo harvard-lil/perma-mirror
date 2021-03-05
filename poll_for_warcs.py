@@ -31,7 +31,7 @@ def main(queue, messages, directory, sleep):
     # does it look like the storage is mounted? check on every download, too.
     generated_warcs = f'{directory}/generated/warcs'
     assert os.path.isdir(generated_warcs)
-    print(f'Downloading to {directory}')
+    click.echo(f'Downloading to {directory}')
 
     while True:
         for message in q.receive_messages(MaxNumberOfMessages=messages):
@@ -63,16 +63,16 @@ def main(queue, messages, directory, sleep):
                     assert os.path.isdir(generated_warcs)
                     s3.Bucket(bucket).download_file(key, fullpath)
                     message.delete()
-                    print(f'Got {key} from {bucket}')
+                    click.echo(f'Got {key} from {bucket}')
                 except botocore.exceptions.ClientError as e:
                     if e.response['Error']['Code'] == "404":
-                        print(f'WARNING: {key} does not exist in {bucket}')
+                        click.echo(f'WARNING: {key} is not in {bucket}')
                     elif e.response['Error']['Code'] == "NoSuchKey":
-                        print(f'WARNING: NoSuchKey: {key}')
+                        click.echo(f'WARNING: NoSuchKey: {key}')
                     else:
                         raise
             else:
-                print(f'Deleting message {message.body}')
+                click.echo(f'Deleting message {message.body}')
                 message.delete()
 
         time.sleep(sleep)
