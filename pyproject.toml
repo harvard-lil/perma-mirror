@@ -1,9 +1,13 @@
 [tool.poetry]
-name = "perma-mirror"
+name = "perma_mirror"
 version = "0.1.0"
 description = "This program watches an SQS queue and downloads newly-created S3 objects"
 authors = ["Ben Steinberg <bsteinberg@law.harvard.edu>"]
 license = "GPLv3"
+repository = "https://github.com/harvard-lil/perma-mirror"
+
+[tool.poetry.scripts]
+poll-for-warcs = "perma_mirror.poll_for_warcs:main"
 
 [tool.poetry.dependencies]
 python = "^3.7"
