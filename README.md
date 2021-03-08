@@ -21,8 +21,8 @@ Now you can run
 
 For development, [install
 Poetry](https://python-poetry.org/docs/#installation), run `source
-$HOME/.poetry/env`, then install this package and its requirements
-like this:
+$HOME/.poetry/env`, and clone this repository. Then, in the repo's
+directory, install the package and its requirements like this:
 
     poetry install
 
