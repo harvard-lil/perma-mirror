@@ -3,7 +3,7 @@ name = "perma_mirror"
 version = "0.1.1"
 description = "This program watches an SQS queue and downloads newly-created S3 objects"
 authors = ["Ben Steinberg <bsteinberg@law.harvard.edu>"]
-license = "GPLv3"
+license = "GPL-3.0-only"
 repository = "https://github.com/harvard-lil/perma-mirror"
 
 [tool.poetry.scripts]
