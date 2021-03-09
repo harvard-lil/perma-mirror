@@ -3,7 +3,7 @@ import botocore
 import botocore.exceptions
 import json
 import time
-import os
+from pathlib import Path
 import click
 
 
@@ -11,11 +11,15 @@ import click
 @click.argument('queue')
 @click.option('--messages', type=click.IntRange(1, 10), default=10,
               help='Messages per attempt')
-@click.option('--directory', default=os.getcwd(),
+@click.option('--directory', default=str(Path.cwd()),
               help='Base directory for downloaded files')
+@click.option('--prefix', default='generated/warcs',
+              help='Prefix for checking storage location')
+@click.option('--skip', multiple=True, default=['generated/cache'],
+              help='Prefixes to skip')
 @click.option('--sleep', default=5,
               help='Time to sleep in seconds between attempts')
-def main(queue, messages, directory, sleep):
+def main(queue, messages, directory, prefix, skip, sleep):
     """
     This program watches an SQS queue and downloads newly-created S3 objects
 
@@ -28,9 +32,10 @@ def main(queue, messages, directory, sleep):
     # connect to S3
     s3 = boto3.resource('s3')
 
+    base = Path(directory)
     # does it look like the storage is mounted? check on every download, too.
-    generated_warcs = f'{directory}/generated/warcs'
-    assert os.path.isdir(generated_warcs)
+    storage_location = base / prefix
+    assert storage_location.is_dir()
     click.echo(f'Downloading to {directory}')
 
     while True:
@@ -51,17 +56,13 @@ def main(queue, messages, directory, sleep):
                     key
                     and bucket
                     and event.startswith('ObjectCreated')
-                    and not key.startswith('generated/cache/')
+                    and not any([key.startswith(s) for s in skip])
             ):
+                subfolders = Path(key).parts[:-1]
+                base.joinpath(*subfolders).mkdir(parents=True, exist_ok=True)
                 try:
-                    path, filename = os.path.split(key)
-                    os.makedirs(os.path.join(directory, path))
-                except OSError:
-                    pass
-                fullpath = os.path.join(directory, key)
-                try:
-                    assert os.path.isdir(generated_warcs)
-                    s3.Bucket(bucket).download_file(key, fullpath)
+                    assert storage_location.is_dir()
+                    s3.Bucket(bucket).download_file(key, str(base / key))
                     message.delete()
                     click.echo(f'Got {key} from {bucket}')
                 except botocore.exceptions.ClientError as e:
