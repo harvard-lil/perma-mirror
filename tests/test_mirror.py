@@ -58,15 +58,16 @@ def test_cli(sqs, s3, tmp_path):
         if m[1] == 'ObjectCreated'
         and not m[0].startswith('generated/cache')
     ])
-    downloaded_files = [
-        x for x in tmp_path.glob('**/*') if x.is_file()
-    ]
     downloaded_keys = [
-        str(x.relative_to(tmp_path)) for x in downloaded_files
+        str(x.relative_to(tmp_path))
+        for x in tmp_path.glob('**/*')
+        if x.is_file()
     ]
     assert sorted(expected_keys) == sorted(downloaded_keys)
 
     for key in downloaded_keys:
         p = tmp_path / key
         # if we had a duplicate key, the last object is the one we expect
-        assert p.read_text() == [obj[1] for obj in objects if obj[0] == key][-1]
+        assert p.read_text() == [obj[1]
+                                 for obj in objects
+                                 if obj[0] == key][-1]
