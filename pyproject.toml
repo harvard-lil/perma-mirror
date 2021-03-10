@@ -14,9 +14,12 @@ remove-from-queue = "perma_mirror.remove_from_queue:main"
 python = "^3.7"
 click = "^7.1.2"
 boto3 = "^1.17.21"
+moto = {extras = ["sqs", "s3"], version = "^2.0.1"}
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
+moto = "^2.0.1"
+pytest = "^6.2.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

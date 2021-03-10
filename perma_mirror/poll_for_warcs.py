@@ -19,7 +19,9 @@ import click
               help='Prefixes to skip')
 @click.option('--sleep', default=5,
               help='Time to sleep in seconds between attempts')
-def main(queue, messages, directory, prefix, skip, sleep):
+@click.option('--repeat/--no-repeat', default=True,
+              help='Cycle indefinitely, or run once for testing')
+def main(queue, messages, directory, prefix, skip, sleep, repeat):
     """
     This program watches an SQS queue and downloads newly-created S3 objects
 
@@ -75,8 +77,10 @@ def main(queue, messages, directory, prefix, skip, sleep):
             else:
                 click.echo(f'Deleting message {message.body}')
                 message.delete()
-
-        time.sleep(sleep)
+        if repeat:
+            time.sleep(sleep)
+        else:
+            return 0
 
 
 if __name__ == '__main__':
