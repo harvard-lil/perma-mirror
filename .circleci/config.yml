@@ -9,4 +9,5 @@ jobs:
           command: |
             pip install poetry
             poetry install
+            poetry run flake8
             poetry run pytest
