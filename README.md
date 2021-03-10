@@ -1,6 +1,8 @@
 perma-mirror
 ============
 
+[![CircleCI](https://circleci.com/gh/harvard-lil/perma-mirror.svg?style=svg)](https://circleci.com/gh/harvard-lil/perma-mirror)
+
 This program watches an SQS queue and downloads newly-created S3
 objects. It is intended to mirror WARCs created by
 [perma.cc](https://perma.cc/).
