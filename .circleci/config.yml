@@ -7,5 +7,6 @@ jobs:
       - checkout # check out the code in the project directory
       - run:
           command: |
-            pip install .
-            python -m pytest
+            pip install poetry
+            poetry install
+            poetry run pytest
