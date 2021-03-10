@@ -1,6 +1,7 @@
 import pytest
 from click.testing import CliRunner
 from uuid import uuid4
+import boto3
 from perma_mirror.poll_for_warcs import main
 from helpers import simulate_aws
 
@@ -38,13 +39,27 @@ def test_nonexistent_queue(sqs, s3):
 
 
 def test_cli(sqs, s3, tmp_path):
+    # set up and check the "remote" part of the test harness...
     simulate_aws(sqs, s3, messages, objects)
 
+    # check the queue
+    msg_count = int(boto3.client('sqs').get_queue_attributes(
+        QueueUrl=sqs.get_queue_url(QueueName='queue')['QueueUrl'],
+        AttributeNames=['ApproximateNumberOfMessages']
+    )['Attributes']['ApproximateNumberOfMessages'])
+    assert msg_count == len(messages)
+
+    # check the bucket (this would fail with over 1,000 objects)
+    key_count = boto3.client('s3').list_objects_v2(Bucket='bucket')['KeyCount']
+    assert key_count == len(set(keys))
+
+    # then set up and check the local part
     storage = tmp_path / 'generated/warcs'
     storage.mkdir(parents=True)
     assert storage.is_dir()
     assert str(storage) == f'{tmp_path}/generated/warcs'
 
+    # run the program
     result = runner.invoke(main,
                            ['--no-repeat',
                             '--directory', str(tmp_path.resolve()),
