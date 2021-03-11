@@ -21,6 +21,7 @@ import click
               help='Time to sleep in seconds between attempts')
 @click.option('--repeat/--no-repeat', default=True,
               help='Cycle indefinitely, or run once for testing')
+@click.version_option()
 def main(queue, messages, directory, prefix, skip, sleep, repeat):
     """
     This program watches an SQS queue and downloads newly-created S3 objects
