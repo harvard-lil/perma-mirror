@@ -47,7 +47,7 @@ def _send_message(sqs, msg):
                                   'StringValue': today},
                          'QueryType': {'DataType': 'String',
                                        'StringValue': "RETRY"}
-                     }, MessageGroupId='test-queue',
+                     },
                      MessageDeduplicationId=f'{today}-A')
 
 
