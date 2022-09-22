@@ -17,6 +17,9 @@ and its requirements, something like this:
     source env/bin/activate
     pip install git+https://github.com/harvard-lil/perma-mirror#egg=perma-mirror
 
+(At the moment, this code is tested with Python 3.7, and 3.10 is known
+not to work.)
+
 Now you can run
 
     poll-for-warcs --help
