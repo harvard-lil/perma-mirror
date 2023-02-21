@@ -1,7 +1,7 @@
 perma-mirror
 ============
 
-![Tests](https://github.com/harvard-lil/perma-mirror/actions/workflows/tests.yml/badge.svg)
+[![Tests](https://github.com/harvard-lil/perma-mirror/actions/workflows/tests.yml/badge.svg)](https://github.com/harvard-lil/perma-mirror/actions)
 
 This program watches an SQS queue and downloads newly-created S3
 objects. It is intended to mirror WARCs created by
