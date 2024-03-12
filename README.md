@@ -10,15 +10,13 @@ objects. It is intended to mirror WARCs created by
 Usage
 -----
 
-For regular use, start a virtual environment and install this package
-and its requirements, something like this:
+For regular use, start a virtual environment using Python 3.11 and
+install this package and its requirements, something like this:
 
     python3 -m venv env
     source env/bin/activate
     pip install git+https://github.com/harvard-lil/perma-mirror#egg=perma-mirror
 
-(At the moment, this code is tested with Python 3.7, and 3.10 is known
-not to work.)
 
 Now you can run
 
