@@ -1,4 +1,3 @@
-import pytest
 from click.testing import CliRunner
 from uuid import uuid4
 import boto3
@@ -38,7 +37,7 @@ def test_nonexistent_queue(sqs, s3):
                        'no_such_queue'],
                       catch_exceptions=False)
     except botocore.exceptions.ClientError as error:
-        assert error.response['Error']['Code'] == 'AWS.SimpleQueueService.NonExistentQueue'
+        assert error.response['Error']['Code'] == 'AWS.SimpleQueueService.NonExistentQueue'  # noqa
 
 
 def test_cli(sqs, s3, tmp_path):
