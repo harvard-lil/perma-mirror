@@ -2,6 +2,7 @@ import pytest
 from click.testing import CliRunner
 from uuid import uuid4
 import boto3
+import botocore
 from perma_mirror.poll_for_warcs import main
 from helpers import simulate_aws
 
@@ -31,11 +32,13 @@ def test_help():
 
 
 def test_nonexistent_queue(sqs, s3):
-    with pytest.raises(sqs.exceptions.QueueDoesNotExist):
+    try:
         runner.invoke(main,
                       ['--no-repeat',
                        'no_such_queue'],
                       catch_exceptions=False)
+    except botocore.exceptions.ClientError as error:
+        assert error.response['Error']['Code'] == 'AWS.SimpleQueueService.NonExistentQueue'
 
 
 def test_cli(sqs, s3, tmp_path):
