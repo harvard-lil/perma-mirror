@@ -71,6 +71,8 @@ def main(queue, messages, directory, prefix, skip, sleep, repeat):
                 except botocore.exceptions.ClientError as e:
                     if e.response['Error']['Code'] == '404':
                         click.echo(f'WARNING: {key} is not in {bucket}')
+                        click.echo(f'Deleting message {message.body}')
+                        message.delete()
                     elif e.response['Error']['Code'] == 'NoSuchKey':
                         click.echo(f'WARNING: NoSuchKey: {key}')
                     else:
